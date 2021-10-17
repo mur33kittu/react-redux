@@ -11,12 +11,12 @@ const AvailableMeals = props => {
   const [httpError, setHttpError] = useState ();
   
   useEffect (() => {
-    const fetchMeals = async () => {
+    // const fetchMeals = async () => {
       
       const responseData = props.meals;
       console.log(responseData);
       const loadedMeals = [];
-
+      debugger;
       for (const key in responseData.data.categorys) {
         // console.log(responseData.data.categorys[key].menuItems);
         loadedMeals.push ({
@@ -30,13 +30,14 @@ const AvailableMeals = props => {
 
       setMeals (loadedMeals);
       setIsLoading (false);
-    };
+    // };
 
-    fetchMeals ().catch (error => {
-      setIsLoading (false);
-      setHttpError (error.message);
-    });
-  }, []);
+    // fetchMeals ().catch (error => {
+    //   setIsLoading (false);
+    //   setHttpError (error.message);
+    // });
+
+  }, [props?.meals]);
 
   if (isLoading) {
     return (
