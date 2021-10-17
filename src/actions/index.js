@@ -20,12 +20,12 @@ export function changeAuth (isLoggedIn) {
 
 export function generateMealData () {
   return async function (dispatch) {    
-    await fetch ('/api/meals').then (res => res.json ()).then (meals => {
-      dispatch ({
-        type: FETCH_DATA,
-        payload: meals,
-      });
-    });
+    const api = await fetch ('/api/meals');
+    const meals1 = await api.json();
+    dispatch ({
+      type: FETCH_DATA,
+      payload: meals1,
+    });  
   };
 }
 
