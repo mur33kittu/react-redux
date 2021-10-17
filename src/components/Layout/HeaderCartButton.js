@@ -1,16 +1,57 @@
-import CartIcon from '../Cart/CartIcon';
-import classes from './HeaderCartButton.module.css';
+import {useEffect, useState} from 'react';
 
-const HeaderCartButton = (props) => {
+import CartIcon from '../Cart/CartIcon';
+// import CartContext from '../../store/cart-context';
+import classes from './HeaderCartButton.module.css';
+import {connect} from 'react-redux';
+import * as actions from '../../actions'
+
+const HeaderCartButton = props => {
+  // console.log (props);
+  const [btnIsHighlighted, setBtnIsHighlighted] = useState (false);
+  // const cartCtx = useContext(CartContext);
+
+  const {items} = props.cart;
+
+  const numberOfCartItems = items.reduce ((curNumber, item) => {
+    return curNumber + item.amount;
+  }, 0);
+
+  const btnClasses = `${classes.button} ${btnIsHighlighted ? classes.bump : ''}`;
+
+  useEffect (
+    () => {
+      if (items.length === 0) {
+        return;
+      }
+      setBtnIsHighlighted (true);
+
+      const timer = setTimeout (() => {
+        setBtnIsHighlighted (false);
+      }, 300);
+
+      return () => {
+        clearTimeout (timer);
+      };
+    },
+    [items]
+  );
+
   return (
-    <button className={classes.button}>
+    <button className={btnClasses} onClick={props.onClick}>
       <span className={classes.icon}>
         <CartIcon />
       </span>
       <span>Your Cart</span>
-      <span className={classes.badge}>3</span>
+      <span className={classes.badge}>{numberOfCartItems}</span>
     </button>
   );
 };
 
-export default HeaderCartButton;
+// export default HeaderCartButton;
+
+function mapStateToProps (state) {
+  return {cart: state.cart};
+}
+
+export default connect (mapStateToProps, actions) (HeaderCartButton);
