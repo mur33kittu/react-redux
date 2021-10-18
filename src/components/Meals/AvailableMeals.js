@@ -11,32 +11,20 @@ const AvailableMeals = props => {
   const [httpError, setHttpError] = useState ();
   
   useEffect (() => {
-    // const fetchMeals = async () => {
-      
       const responseData = props.meals;
-      console.log(responseData);
       const loadedMeals = [];
-      debugger;
-      for (const key in responseData.data.categorys) {
-        // console.log(responseData.data.categorys[key].menuItems);
+      if(responseData?.meals) {
+      for (const key in responseData?.meals.data.categorys) {
         loadedMeals.push ({
           id: key,
-          name: responseData.data.categorys[key].name,
-          // description: responseData.data.meals[key].description,
-          menuItems: responseData.data.categorys[key].menuItems,
-          // price: responseData.data.meals[key].price,
+          name: responseData?.meals.data.categorys[key].name,
+          menuItems: responseData?.meals.data.categorys[key].menuItems
         });
       }
 
       setMeals (loadedMeals);
       setIsLoading (false);
-    // };
-
-    // fetchMeals ().catch (error => {
-    //   setIsLoading (false);
-    //   setHttpError (error.message);
-    // });
-
+    }
   }, [props?.meals]);
 
   if (isLoading) {
